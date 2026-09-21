@@ -1,9 +1,10 @@
 # Shape of Science: compact reproducibility release
 
-Version **1.1.0**, 21 September 2026. Author: **Alejandro Treny Ortega**, independent researcher.
+Version **1.1.0**, 21 September 2026. Author: **Alejandro Treny Ortega**, University College London, London, United Kingdom.
 
 This distribution accompanies *How much does the map of science depend on the embedding model?* It provides scientific code and frozen analysis data for repeating the statistical comparisons. It does not include the manuscript or supplements.
 
+- Final article and supplementary material: [official English documents and professional Spanish translation](https://github.com/aleetreny/Shape-of-Science-Robustness#read-or-download).
 - Permanent dataset identifier: [10.5281/zenodo.22876602](https://doi.org/10.5281/zenodo.22876602).
 - [Versioned downloads](https://github.com/aleetreny/Shape-of-Science-Reproducibility/releases/tag/v1.1.0).
 - [Source repository](https://github.com/aleetreny/Shape-of-Science-Reproducibility).
