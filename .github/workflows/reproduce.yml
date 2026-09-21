@@ -1,0 +1,50 @@
+name: Reproduce published statistical analyses
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download public release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download v1.1.0 --dir downloads --repo "$GITHUB_REPOSITORY"
+      - name: Verify and extract frozen release
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, zipfile
+          downloads = pathlib.Path('downloads')
+          manifest = (downloads/'release-manifest.json').read_bytes()
+          assert manifest == pathlib.Path('release-manifest.json').read_bytes()
+          for entry in json.loads(manifest)['files']:
+              path = downloads/entry['name']
+              assert path.stat().st_size == entry['bytes']
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == entry['sha256']
+          target = pathlib.Path('public-reproduction').resolve()
+          target.mkdir()
+          for path in sorted(downloads.glob('*.zip')):
+              with zipfile.ZipFile(path) as z:
+                  assert z.testzip() is None
+                  assert all((target/name).resolve().is_relative_to(target) for name in z.namelist())
+                  z.extractall(target)
+          PY
+      - name: Install frozen analysis dependencies
+        run: python -m pip install -r public-reproduction/requirements-analysis.txt
+      - name: Recompute and compare all documented statistical checks
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+        run: python public-reproduction/reproducibility/reproduce_analysis.py
+      - name: Save verification receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: statistical-reproduction-linux
+          path: public-reproduction/reproduced/verification.json
+          if-no-files-found: error
