@@ -1,0 +1,8 @@
+/data/
+/public_metadata/
+/downloads/
+/reproduced/
+/.venv*/
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,24 @@
+name: Verify and archive compact release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: zenodo-compact-22876602
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check figure aggregations offline
+        run: python3 -I -S reproducibility/reproduce_summaries.py
+      - name: Download exact release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download v1.1.0 --repo aleetreny/Shape-of-Science-Reproducibility --dir downloads
+      - name: Verify and copy assets to the existing Zenodo draft
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+        run: python3 .github/scripts/deposit.py

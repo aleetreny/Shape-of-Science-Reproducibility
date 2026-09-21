@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "Please cite this versioned reproducibility dataset."
+type: dataset
+title: "How much does the map of science depend on the embedding model? Compact reproducibility data and code"
+authors:
+  - family-names: "Treny Ortega"
+    given-names: "Alejandro"
+    affiliation: "Independent researcher"
+version: "1.1.0"
+date-released: "2026-09-21"
+doi: "10.5281/zenodo.22876602"
+url: "https://github.com/aleetreny/Shape-of-Science-Reproducibility/releases/tag/v1.1.0"
+license: "CC-BY-4.0"
