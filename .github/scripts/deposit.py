@@ -14,11 +14,14 @@ def request(method,path,body=None):
     assert (method=='GET' and path==API) or (method=='PUT' and path.startswith('/api/files/'))
     conn=http.client.HTTPSConnection('zenodo.org',timeout=300,context=CONTEXT)
     try:
-        headers={'Authorization':'Bearer '+TOKEN,'Accept':'application/json'}
+        headers={'Authorization':'Bearer '+TOKEN,'Accept':'application/json','User-Agent':'ShapeOfScienceReproduction/1.1 (https://github.com/aleetreny/Shape-of-Science-Reproducibility)'}
         if body is not None:headers['Content-Type']='application/octet-stream'
         conn.request(method,path,body=body,headers=headers)
         response=conn.getresponse()
-        if not 200<=response.status<300:raise RuntimeError(f'Zenodo HTTP {response.status}')
+        if not 200<=response.status<300:
+            detail=response.read(1800).decode('utf-8',errors='replace').replace(TOKEN,'[redacted]')
+            print('Zenodo error detail:',repr(detail),flush=True)
+            raise RuntimeError(f'Zenodo HTTP {response.status}')
         return json.loads(response.read())
     finally:conn.close()
 
