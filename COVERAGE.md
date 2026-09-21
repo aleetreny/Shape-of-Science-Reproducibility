@@ -1,6 +1,6 @@
 # Reproduction boundary and file selection
 
-QSS requires the data essential to reproduce the key findings in a public repository providing a persistent identifier. Code sharing is strongly recommended. This is a requirement about evidence and access, not about retaining every computational cache. GitHub alone does not provide the journal's requested archival dataset identifier; this release therefore has a separate DOI archive. Source: [QSS submission guidelines](https://direct.mit.edu/qss/pages/submission-guidelines), official indexed text consulted 21 September 2026; direct access was blocked.
+QSS requires the data essential to reproduce the key findings in a public repository providing a persistent identifier. Code sharing is strongly recommended. This is a requirement about evidence and access, not about retaining every computational cache. GitHub alone does not provide the journal's requested archival dataset identifier; this release therefore has a separate DOI archive. Source: [QSS submission guidelines](https://direct.mit.edu/qss/pages/submission-guidelines), official indexed text consulted 21 September 2026 and subsequently confirmed by reading the official page directly in the browser on the same date.
 
 ## What is retained and why
 

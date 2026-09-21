@@ -4,14 +4,14 @@ Version **1.1.0**, 21 September 2026. Author: **Alejandro Treny Ortega**, indepe
 
 This distribution accompanies *How much does the map of science depend on the embedding model?* It provides scientific code and frozen analysis data for repeating the statistical comparisons. It does not include the manuscript or supplements.
 
-- Dataset identifier (reserved; archival transfer in progress): [10.5281/zenodo.22876602](https://doi.org/10.5281/zenodo.22876602).
+- Permanent dataset identifier: [10.5281/zenodo.22876602](https://doi.org/10.5281/zenodo.22876602).
 - [Versioned downloads](https://github.com/aleetreny/Shape-of-Science-Reproducibility/releases/tag/v1.1.0).
 - [Source repository](https://github.com/aleetreny/Shape-of-Science-Reproducibility).
 - Original scientific code snapshot: [cc61517](https://github.com/aleetreny/Shape-of-Science-Robustness/commit/cc61517dc2ea1e946c4fe391c4fcc80fa6e4819f). Scientific programs in this distribution retain their original contents. New reproduction and delivery utilities are identified separately.
 
 ## What to download
 
-Download `code-and-guides.zip`, every `data-*.zip`, and `release-manifest.json` from the same release. Extract all ZIP files into **one new directory**. Their internal paths fit together; do not extract over an existing research checkout. The same assets are being transferred to the DOI archive above; GitHub downloads are already public. The article can be revised independently of these frozen data.
+Download `code-and-guides.zip`, every `data-*.zip`, and `release-manifest.json` from the same release. Extract all ZIP files into **one new directory**. Their internal paths fit together; do not extract over an existing research checkout. The same assets are archived with the DOI above; both download routes are public. The article can be revised independently of these frozen data.
 
 The data include the 500,000-record non-text metadata table; exact identifiers and sample selections; per-query neighbour intersection counts; per-model, area and repetition measurements; geometric measurements before and after centering; input, pooling, quality and other controls. `SELECTION.json` records every included file's origin and hash, together with the omitted historical files and reasons.
 
