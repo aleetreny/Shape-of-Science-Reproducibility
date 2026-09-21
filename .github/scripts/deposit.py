@@ -15,8 +15,27 @@ def request(method,path,body=None):
     conn=http.client.HTTPSConnection('zenodo.org',timeout=300,context=CONTEXT)
     try:
         headers={'Authorization':'Bearer '+TOKEN,'Accept':'application/json','User-Agent':'ShapeOfScienceReproduction/1.1 (https://github.com/aleetreny/Shape-of-Science-Reproducibility)'}
-        if body is not None:headers['Content-Type']='application/octet-stream'
-        conn.request(method,path,body=body,headers=headers)
+        if body is None:
+            conn.request(method,path,headers=headers)
+        else:
+            # The timeout applies to one sendall(), not just to stalled progress.
+            # Send bounded blocks so a healthy slow upload may exceed 300 seconds.
+            assert isinstance(body,Path)
+            size=body.stat().st_size
+            headers['Content-Type']='application/octet-stream'
+            headers['Content-Length']=str(size)
+            conn.putrequest(method,path)
+            for key,value in headers.items():conn.putheader(key,value)
+            conn.endheaders()
+            sent=0; started=last=time.monotonic()
+            with body.open('rb') as source:
+                for block in iter(lambda:source.read(256*1024),b''):
+                    conn.send(block);sent+=len(block)
+                    now=time.monotonic()
+                    if now-last>=45:
+                        print(f'{body.name}: {sent/size:.1%}; {sent/1e6:.1f} MB sent; {sent/1e6/(now-started):.2f} MB/s',flush=True)
+                        last=now
+            assert sent==size,'Local file changed while uploading'
         response=conn.getresponse()
         if not 200<=response.status<300:
             detail=response.read(1800).decode('utf-8',errors='replace').replace(TOKEN,'[redacted]')
@@ -54,7 +73,7 @@ for e in sorted(entries,key=lambda e:e['bytes']):
         assert url.scheme=='https' and url.netloc=='zenodo.org' and url.path.startswith('/api/files/') and not url.query
         try:
             print('Uploading:',e['name'],e['bytes'],'bytes; attempt',attempt+1,flush=True)
-            result=request('PUT',url.path+'/'+quote(e['name'],safe=''),(FILES/e['name']).read_bytes())
+            result=request('PUT',url.path+'/'+quote(e['name'],safe=''),FILES/e['name'])
             assert matches(result,e),e['name']
             print('Verified:',e['name'],flush=True);break
         except (OSError,http.client.HTTPException,RuntimeError) as exc:
